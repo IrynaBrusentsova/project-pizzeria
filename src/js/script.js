@@ -93,15 +93,17 @@
       const thisProduct = this;
     
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-      console.log(thisProduct.accordionTrigger);
+      // console.log(thisProduct.accordionTrigger);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
-      console.log(thisProduct.form);
+      // console.log(thisProduct.form);
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
-      console.log(thisProduct.formInputs);
+      // console.log(thisProduct.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
-      console.log( thisProduct.cartButton);
+      // console.log( thisProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      console.log( thisProduct.priceElem);
+      // console.log( thisProduct.priceElem);
+      thisProduct.imageWrapper =  thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      // console.log(thisProduct.imageWrapper);
     }
 
     initAccordion(){
@@ -178,12 +180,12 @@
 
           const option = param.options[optionId];
           console.log(optionId, option);
-
+          // =====
           // check if there is param with a name of paramId in formData and if it includes optionId
           if(formData[paramId] && formData[paramId].includes(optionId)) {
             // check if the option is not default
 
-            if(!option.default === false ) {
+            if(!option.default ) {
               // add option price to price variable
               
               price = price + option.price;
@@ -191,20 +193,32 @@
             }
           } else {
             // check if the option is default
-            if(!option.default === true ) { 
+            if(option.default ) { 
               // reduce price variable
               price = price - option.price;
             }
-     }
+          }  
+           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+           
+           const optionImage = thisProduct.imageWrapper.querySelector( '.' + paramId + '-' + optionId );
+                           
+            if (optionImage){
+              if (optionSelected){
+                optionImage.classList.add(classNames.menuProduct.imageVisible);
+              }
+              else {
+               optionImage.classList.remove(classNames.menuProduct.imageVisible);
+              }
+            }
+          
         }
       }
       // update calculated price in the HTML
-      thisProduct.priceElem.innerHTML = price;
-      
+      thisProduct.priceElem.innerHTML = price;  
     }
-
   }
 
+ 
 
 const app = {
   initMenu: function() {
@@ -233,7 +247,6 @@ const app = {
 
     thisApp.initMenu();
   },
-
 
 };
 
