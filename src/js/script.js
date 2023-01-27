@@ -237,6 +237,7 @@
 
       thisWidget.getElements(element);
       thisWidget.initAction();
+       
 
       // thisWidget.setValue(thisWidget.input.value);
     }
@@ -259,20 +260,19 @@
       /* TODO: Add validation*/
       
       if (thisWidget.value !== newValue && !isNaN(newValue) && 
-      settings.amountWidget.defaultMin <= newValue && newValue <= settings.amountWidget.defaultMax){
-        thisWidget.value = newValue; 
+      (settings.amountWidget.defaultMin <= newValue) && (newValue <= settings.amountWidget.defaultMax)){
+        thisWidget.value = newValue;   
       }
-      
-      // if (settings.amountWidget.defaultMin >= newValue   &&  newValue <= settings.amountWidget.defaultMax)
-      //    {
-      //   thisWidget.value = newValue;
-      // }
 
-      // if ( newValue <= settings.amountWidget.defaultMax){
-      //   thisWidget.value = newValue;
-      // }
-      thisWidget.value = newValue;
+      //  thisWidget.value = newValue;
       thisWidget.input.value = thisWidget.value;
+      thisWidget.announce(); 
+    }
+
+    announce(){
+      const thisWidget = this;
+      const event =  new Event('updated');
+      thisWidget.element.dispatchEvent(event);
     }
 
     initAction(){
