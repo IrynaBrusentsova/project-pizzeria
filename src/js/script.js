@@ -188,8 +188,7 @@
             // check if the option is not default
 
             if(!option.default ) {
-              // add option price to price variable
-              
+              // add option price to price variable  
               price = price + option.price;
               console.log(price);
             }
@@ -242,8 +241,7 @@
 
       thisWidget.getElements(element);
       thisWidget.initAction();
-       
-      thisWidget.setValue(thisWidget.input.value); 
+      thisWidget.setValue(thisWidget.input.value);   
 
     }
 
@@ -256,7 +254,6 @@
       thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
       thisWidget.setValue(thisWidget.input.value);
-
     }
 
     setValue(value){
@@ -265,14 +262,14 @@
       const newValue = parseInt(value);
       console.log(newValue);
       /* TODO: Add validation*/
-      
       if (thisWidget.value !== newValue && !isNaN(newValue) && 
       (settings.amountWidget.defaultMin <= newValue) && (newValue <= settings.amountWidget.defaultMax)){
         thisWidget.value = newValue;   
       }
       //  thisWidget.value = newValue;
+      // thisWidget.input.value = thisWidget.value;
 
-        thisWidget.input.value = thisWidget.value;
+      thisWidget.input.value = settings.amountWidget.defaultValue;
       thisWidget.announce(); 
     }
 
