@@ -206,9 +206,6 @@
       const thisProduct = this;
       console.log(thisProduct);
 
-
-
-
       // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.form);
       console.log('formData:', formData);
@@ -345,7 +342,6 @@
       //  thisWidget.setValue(thisWidget.input.value); 
       thisWidget.setValue(settings.amountWidget.defaultValue);
     }
-
     getElements(element) {
       const thisWidget = this;
 
@@ -355,15 +351,10 @@
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
       thisWidget.setValue(thisWidget.input.value);
     }
-
-
-
     setValue(value) {
       const thisWidget = this;
-
       const newValue = parseInt(value);
       console.log(newValue);
-
       const {
         amountWidget: { defaultMax, defaultMin },
       } = settings;
@@ -422,11 +413,17 @@
     getElements(element) {
       const thisCart = this;
       thisCart.dom = {};
+
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
-      console.log(thisCart.dom.toggleTrigger);
+      // console.log(thisCart.dom.toggleTrigger);
       thisCart.dom.productList = element.querySelector(select.cart.productList);
-      console.log(thisCart.dom.productList);
+      // console.log(thisCart.dom.productList);
+      // додавання кошика
+      thisCart.dom.deliveryFee = element.querySelector(select.cart.deliveryFee);
+      thisCart.dom.subtotalPrice = element.querySelector(select.cart.subtotalPrice);
+      thisCart.dom.totalPrice = element.querySelectorAll(select.cart.totalPrice);
+      thisCart.dom.totalNumber = element.querySelector(select.cart.totalNumber);
 
     }
 
@@ -441,7 +438,10 @@
     }
 
     
-    add(menuProduct) {
+   
+   
+
+    add (menuProduct) {
       const thisCart = this;
 
       /* generate HTML based on template*/
@@ -460,10 +460,83 @@
       thisCart.dom.productList.appendChild(generatedDOM);
       console.log('adding product', menuProduct);
 
-      thisCart.products.push(menuProduct);
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
       console.log('thisCart.products', thisCart.products);
+      thisCart.update();
 
     }
+
+
+    // додавання кошика
+    update(){
+      const thisCart = this;
+
+      const deliveryFee = settings.cart.defaultDeliveryFee;
+       let totalNumber = 0;
+       let subtotalPrice = 0;
+        for (let product of thisCart.products){
+          totalNumber += product.amount;
+          subtotalPrice += product.price;
+        }
+
+        if (totalNumber = !0){
+          thisCart.totalPrice = subtotalPrice + deliveryFee;
+          thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+        }
+
+        thisCart.dom.totalNumber.innerHTML = totalNumber;
+        thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+
+        for (let price of thisCart.dom.totalPrice){
+          price.innerHTML = thisCart.totalPrice;
+        }
+    }
+  }
+  
+
+  class CartProduct{
+    constructor(menuProduct, element){
+      const thisCartProduct = this;
+
+      thisCartProduct.id = menuProduct.id;
+      thisCartProduct.amount = menuProduct.amount;
+      thisCartProduct.name = menuProduct.name;
+      thisCartProduct.price = menuProduct.price;
+      thisCartProduct.params = menuProduct.params;
+      thisCartProduct.priceSingle = menuProduct.priceSingle; 
+      
+     thisCartProduct.getElements(element);
+     console.log(thisCartProduct);
+     thisCartProduct.cartProductAmountWidget();
+
+    }
+    getElements(element){
+      const thisCartProduct = this;
+      thisCartProduct.dom = {};
+      thisCartProduct.dom.wrapper = element;
+
+      thisCartProduct.dom.amountWidget = element.querySelector(select.cartProduct.amountWidget);
+      console.log(thisCartProduct.dom.amountWidget);
+      thisCartProduct.dom.price = element.querySelector (select.cartProduct.price);
+      console.log(thisCartProduct.dom.price);
+      thisCartProduct.dom.edit = element.querySelector(select.cartProduct.edit);
+      console.log(thisCartProduct.dom.edit);
+      thisCartProduct.dom.remove = element.querySelector(select.cartProduct.remove);
+      console.log(thisCartProduct.dom.remove);
+      }
+
+      cartProductAmountWidget() {
+        const thisCartProduct = this;
+
+        thisCartProduct.amount = menuProduct.amount;
+        thisCartProduct.priceSingle = menuProduct.priceSingle;
+          
+        thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.amountWidgetElem);
+        thisCartProduct.amountWidgetElem.addEventListener('updated', function (event) {
+          event.preventDefault();
+          thisCartProduct.processOrder();
+        });
+      }   
   }
 
 
