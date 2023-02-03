@@ -1,5 +1,3 @@
-/* global Handlebars, utils, dataSource */ // eslint-disable-line no-unused-vars
-
 {
   'use strict';
 
@@ -295,7 +293,6 @@
         params: thisProduct.readyCartProductParams(),
       };
       return productSummary;
-
     }
 
     readyCartProductParams() {
@@ -351,6 +348,7 @@
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
       thisWidget.setValue(thisWidget.input.value);
     }
+    
     setValue(value) {
       const thisWidget = this;
       const newValue = parseInt(value);
@@ -381,7 +379,10 @@
 
     announce() {
       const thisWidget = this;
-      const event = new Event('updated');
+      // const event = new Event('updated');
+      const event = new CustomEvent('updated', {
+        bubles:true 
+      });
       thisWidget.element.dispatchEvent(event);
     }
 
@@ -410,6 +411,9 @@
       thisCart.initAction();
       console.log('new Cart', thisCart);
     }
+
+   
+
     getElements(element) {
       const thisCart = this;
       thisCart.dom = {};
@@ -434,12 +438,11 @@
         event.preventDefault();
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
-
+       thisCart.dom.productList.addEventListener('updated', function(){
+        thisCart.update();
+      });
+      
     }
-
-    
-   
-   
 
     add (menuProduct) {
       const thisCart = this;
@@ -474,26 +477,28 @@
       const deliveryFee = settings.cart.defaultDeliveryFee;
        let totalNumber = 0;
        let subtotalPrice = 0;
+
         for (let product of thisCart.products){
           totalNumber += product.amount;
           subtotalPrice += product.price;
         }
 
-        if (totalNumber = !0){
+        if (totalNumber != 0){
           thisCart.totalPrice = subtotalPrice + deliveryFee;
           thisCart.dom.deliveryFee.innerHTML = deliveryFee;
         }
 
         thisCart.dom.totalNumber.innerHTML = totalNumber;
         thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+              
 
         for (let price of thisCart.dom.totalPrice){
           price.innerHTML = thisCart.totalPrice;
         }
     }
+    
   }
   
-
   class CartProduct{
     constructor(menuProduct, element){
       const thisCartProduct = this;
@@ -515,6 +520,7 @@
       thisCartProduct.dom = {};
       thisCartProduct.dom.wrapper = element;
 
+      
       thisCartProduct.dom.amountWidget = element.querySelector(select.cartProduct.amountWidget);
       console.log(thisCartProduct.dom.amountWidget);
       thisCartProduct.dom.price = element.querySelector (select.cartProduct.price);
@@ -525,19 +531,43 @@
       console.log(thisCartProduct.dom.remove);
       }
 
+
+    
       cartProductAmountWidget() {
         const thisCartProduct = this;
 
-        thisCartProduct.amount = menuProduct.amount;
-        thisCartProduct.priceSingle = menuProduct.priceSingle;
-          
-        thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.amountWidgetElem);
-        thisCartProduct.amountWidgetElem.addEventListener('updated', function (event) {
+        thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
+        thisCartProduct.dom.amountWidget.addEventListener('updated', function (event){
           event.preventDefault();
-          thisCartProduct.processOrder();
+          thisCartProduct.amount = thisCartProduct.amountWidget.value;
+          // console.log(thisCartProduct.amount);
+          thisCartProduct.price = thisCartProduct.amount * thisCartProduct.priceSingle;
+          // console.log(thisCartProduct.price);
+          thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+          // console.log(thisCartProduct.dom.price);
+         
+          // console.log(thisCartProduct.dom.amountWidget);
+          
         });
-      }   
+      }  
+
+      //видалення кошика
+     remove(){
+      const thisCartProduct = this;
+
+      const event = new CustomEvent ('remove', {
+        bubles: true,
+        detail: {
+          CartProduct:thisCartProduct,
+        },
+      } );
+      thisCartProduct.dom.wrapper.dispatchEvent(event);
+     }
   }
+
+ 
+
+
 
 
 
