@@ -328,7 +328,7 @@
 
 
   class AmountWidget {
-    constructor(element) {
+      constructor(element) {
       const thisWidget = this;
 
       console.log('AmountWidget:', thisWidget);
@@ -336,9 +336,15 @@
 
       thisWidget.getElements(element);
       thisWidget.initAction();
-      //  thisWidget.setValue(thisWidget.input.value); 
-      thisWidget.setValue(settings.amountWidget.defaultValue);
+
+      if (thisWidget.input.value === 'NaN') {
+        thisWidget.setValue(settings.amountWidget.defaultValue);
+      } else {
+        thisWidget.setValue(thisWidget.input.value); 
+      }
     }
+
+    
     getElements(element) {
       const thisWidget = this;
 
@@ -412,8 +418,6 @@
       console.log('new Cart', thisCart);
     }
 
-   
-
     getElements(element) {
       const thisCart = this;
       thisCart.dom = {};
@@ -441,8 +445,11 @@
        thisCart.dom.productList.addEventListener('updated', function(){
         thisCart.update();
       });
-      
+       thisCart.dom.productList.addEventListener('remove', function(event){
+        thisCart.remove(event.detail.cartProduct);
+      });  
     }
+
 
     add (menuProduct) {
       const thisCart = this;
@@ -491,12 +498,29 @@
         thisCart.dom.totalNumber.innerHTML = totalNumber;
         thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
               
-
         for (let price of thisCart.dom.totalPrice){
           price.innerHTML = thisCart.totalPrice;
         }
     }
-    
+
+    //видалення продуктів з кошика
+
+    remove(cartProduct){
+      const thisCart = this;
+      console.log('remove', cartProduct);
+
+      for (let product of thisCart.products){
+        if (product === cartProduct){
+          const index = thisCart.products.indexOf(product);
+          console.log(index);
+          thisCart.products.splice(index, 1);
+        }
+      }
+       thisCart.update();
+       console.log(cartProduct.dom.wrapper);
+       cartProduct.dom.wrapper.remove();  
+     }
+
   }
   
   class CartProduct{
@@ -513,14 +537,13 @@
      thisCartProduct.getElements(element);
      console.log(thisCartProduct);
      thisCartProduct.cartProductAmountWidget();
-
     }
+
     getElements(element){
       const thisCartProduct = this;
       thisCartProduct.dom = {};
       thisCartProduct.dom.wrapper = element;
 
-      
       thisCartProduct.dom.amountWidget = element.querySelector(select.cartProduct.amountWidget);
       console.log(thisCartProduct.dom.amountWidget);
       thisCartProduct.dom.price = element.querySelector (select.cartProduct.price);
@@ -531,8 +554,6 @@
       console.log(thisCartProduct.dom.remove);
       }
 
-
-    
       cartProductAmountWidget() {
         const thisCartProduct = this;
 
@@ -552,23 +573,20 @@
       }  
 
       //видалення кошика
+
      remove(){
       const thisCartProduct = this;
-
+      
       const event = new CustomEvent ('remove', {
         bubles: true,
         detail: {
           CartProduct:thisCartProduct,
         },
       } );
+
       thisCartProduct.dom.wrapper.dispatchEvent(event);
      }
   }
-
- 
-
-
-
 
 
   const app = {
@@ -614,3 +632,6 @@
 
   app.init();
 }
+
+
+
