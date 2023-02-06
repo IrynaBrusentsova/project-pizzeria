@@ -448,6 +448,10 @@
        thisCart.dom.productList.addEventListener('remove', function(event){
         thisCart.remove(event.detail.cartProduct);
       });  
+      // thisCart.dom.form.addEventListener('submit', function(){
+      //   thisCart.sendOrder();
+
+      // });
     }
 
 
@@ -503,6 +507,7 @@
         }
     }
 
+    
     //видалення продуктів з кошика
 
     remove(cartProduct){
@@ -520,75 +525,82 @@
        console.log(cartProduct.dom.wrapper);
        cartProduct.dom.wrapper.remove();  
      }
-
+ 
   }
-  
-  class CartProduct{
-    constructor(menuProduct, element){
-      const thisCartProduct = this;
 
-      thisCartProduct.id = menuProduct.id;
-      thisCartProduct.amount = menuProduct.amount;
-      thisCartProduct.name = menuProduct.name;
-      thisCartProduct.price = menuProduct.price;
-      thisCartProduct.params = menuProduct.params;
-      thisCartProduct.priceSingle = menuProduct.priceSingle; 
+
+  class CartProduct {
+    constructor(menuProduct, element, productList) {
+    
+
+      const thisCartProduct = this;
       
-     thisCartProduct.getElements(element);
-     console.log(thisCartProduct);
-     thisCartProduct.cartProductAmountWidget();
+      thisCartProduct.id = menuProduct.id;
+      thisCartProduct.productList = productList;
+      thisCartProduct.name = menuProduct.name;
+      thisCartProduct.amount = menuProduct.amount;
+      thisCartProduct.priceSingle = menuProduct.priceSingle;
+      thisCartProduct.price = menuProduct.price;
+      thisCartProduct.remove = this.remove; 
+      thisCartProduct.edit = menuProduct.edit;
+      thisCartProduct.getElements(element);
+      thisCartProduct.initAmountWidget();
+      thisCartProduct.initActions();
+    }
+    getElements(element) {
+
+      const thisCartProduct = this;
+      thisCartProduct.dom ={};
+      thisCartProduct.dom.wrapper = element;
+      thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
+      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
+      thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
+      thisCartProduct.dom.remove  = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+      thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
     }
 
-    getElements(element){
+
+    initAmountWidget() {
       const thisCartProduct = this;
-      thisCartProduct.dom = {};
-      thisCartProduct.dom.wrapper = element;
 
-      thisCartProduct.dom.amountWidget = element.querySelector(select.cartProduct.amountWidget);
-      console.log(thisCartProduct.dom.amountWidget);
-      thisCartProduct.dom.price = element.querySelector (select.cartProduct.price);
-      console.log(thisCartProduct.dom.price);
-      thisCartProduct.dom.edit = element.querySelector(select.cartProduct.edit);
-      console.log(thisCartProduct.dom.edit);
-      thisCartProduct.dom.remove = element.querySelector(select.cartProduct.remove);
-      console.log(thisCartProduct.dom.remove);
-      }
+      thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
+      thisCartProduct.dom.amountWidget.addEventListener('updated', function () {
 
-      cartProductAmountWidget() {
-        const thisCartProduct = this;
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
+        thisCartProduct.price = thisCartProduct.amount * thisCartProduct.priceSingle;
+        thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+      });
+    }
 
-        thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
-        thisCartProduct.dom.amountWidget.addEventListener('updated', function (event){
-          event.preventDefault();
-          thisCartProduct.amount = thisCartProduct.amountWidget.value;
-          // console.log(thisCartProduct.amount);
-          thisCartProduct.price = thisCartProduct.amount * thisCartProduct.priceSingle;
-          // console.log(thisCartProduct.price);
-          thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
-          // console.log(thisCartProduct.dom.price);
-         
-          // console.log(thisCartProduct.dom.amountWidget);
-          
-        });
-      }  
-
-      //видалення кошика
-
-     remove(){
+    remove(){
       const thisCartProduct = this;
-      
-      const event = new CustomEvent ('remove', {
-        bubles: true,
+      console.log(thisCartProduct);
+
+      const event = new CustomEvent('remove' ,{
+        bubbles: true,
         detail: {
-          CartProduct:thisCartProduct,
+          cartProduct: thisCartProduct,
         },
-      } );
-
+      });
       thisCartProduct.dom.wrapper.dispatchEvent(event);
-     }
+    }
+
+    initActions(){
+      const thisCartProduct = this;
+
+      thisCartProduct.dom.edit.addEventListener('click', function(e){
+        e.preventDefault();
+      });
+      thisCartProduct.dom.remove.addEventListener('click', function(e){
+        e.preventDefault(e);
+        thisCartProduct.remove(event.detail.cartProduct);
+        console.log(thisCartProduct.dom.remove);
+      });
+    }
+    
   }
 
-
+  
   const app = {
     initMenu: function () {
       const thisApp = this;
@@ -632,6 +644,4 @@
 
   app.init();
 }
-
-
 
