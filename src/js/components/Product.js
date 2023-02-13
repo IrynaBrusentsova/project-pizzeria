@@ -134,10 +134,10 @@ class Product {
       const thisProduct = this;
     //   app.cart.add(thisProduct.readyCartProduct());
 
-    const event = CustomEvent('add-to-cart', {
+    const event = new CustomEvent('add-to-cart', {
         bubbles:true,
         detail:{
-            product:thisProduct,
+            product:thisProduct.readyCartProduct(),
         },
     });
 

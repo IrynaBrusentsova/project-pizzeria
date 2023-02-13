@@ -65,4 +65,7 @@ class AmountWidget{
       });
     }
   }
+
+
+
   export default AmountWidget;
