@@ -10,7 +10,6 @@ import Booking from './components/Booking.js';
       const thisApp = this;
       const bookingWidget = document.querySelector(select.containerOf.booking);
       console.log(bookingWidget);
-      
       thisApp.booking = new Booking(bookingWidget);
     },
 
