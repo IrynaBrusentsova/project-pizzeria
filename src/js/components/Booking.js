@@ -248,28 +248,7 @@ class Booking {
     
   }
 
-  // render(wrapper){
-  //   const thisBooking = this;
-
-  //   thisBooking.dom = {};
-  //   thisBooking.dom.wrapper = wrapper;
-
-  //   const generatedHTML = templates.bookingWidget();
-  //   const element = utils.createDOMFromHTML(generatedHTML);
-  //   thisBooking.dom.wrapper.appendChild(element);
-
-  //   thisBooking.dom.peopleAmount = document.querySelector(select.booking.peopleAmount);
-  //   thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount);
-  //   thisBooking.dom.datePicker = document.querySelector(select.widgets.datePicker.wrapper);
-  //   thisBooking.dom.timePicker = document.querySelector(select.widgets.hourPicker.wrapper);
-  //   thisBooking.dom.floor = document.querySelector(select.booking.floor);
-  //   thisBooking.dom.tables = document.querySelectorAll(select.booking.tables);
-  //   thisBooking.dom.sendResBtn = document.querySelector(select.booking.sendResBtn);
-  //   thisBooking.dom.phone = document.querySelector(select.booking.phoneInput);
-  //   thisBooking.dom.address = document.querySelector(select.booking.addressInput);
-  //   thisBooking.dom.startersCheck = document.querySelectorAll(select.booking.startersCheck);
-  //   thisBooking.dom.orderConfirmationInputs = document.querySelectorAll('.order-confirmation input');
-  // }
+  
 
 
 
