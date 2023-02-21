@@ -107,6 +107,7 @@ import Booking from './components/Booking.js';
       });
 
     },
+
     init: function(){
       const thisApp = this;
 
@@ -115,11 +116,13 @@ import Booking from './components/Booking.js';
       //thisApp.initMenu();
       thisApp.initCart();
       thisApp.initBooking();
-           
+         
     },
   };
   
   app.init();
+
+// =====
 
 
 

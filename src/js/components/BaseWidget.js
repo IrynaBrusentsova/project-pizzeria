@@ -1,62 +1,50 @@
+
 class BaseWidget {
-    constructor(wrapperElement, initialValue) {
-        const thisWidget = this;
+  constructor(wrapperElement, initialValue) {
+    const thisWidget = this;
+    thisWidget.dom = {};
+    thisWidget.dom.wrapper = wrapperElement;
+    thisWidget.correctValue = initialValue;
+  }
+  get value() {
+    const thisWidget = this;
+    return thisWidget.correctValue;
+  }
 
-        thisWidget.dom = {};
-        thisWidget.dom.wrapper = wrapperElement;
-        thisWidget.correctValue = initialValue;
-         
-      }
-      
-      get value(){
-        const thisWidget = this;
-        return thisWidget.correctValue;
+  set value(value) {
+    const thisWidget = this;
+    const newValue = thisWidget.parseValue(value); //змінює строку на число, "10"стає 10
+    if (newValue != thisWidget.correctValue && thisWidget.isValid(newValue)) {
+      thisWidget.correctValue = newValue;
+      thisWidget.announce();
+    }
+    thisWidget.renderValue();
+  }
 
-      }
+  setValue(value) {
+    const thisWidget = this;
+    thisWidget.value = value;
+  }
+  parseValue(value) {
+    return parseInt(value);
+  }
 
-      set value(value) {
-        const thisWidget = this;
-        const newValue = thisWidget.parseValue(value);
-  
-        /*TODO: Add validation*/
-        if (newValue != thisWidget.correctValue  && thisWidget.isValid(newValue)){
-          thisWidget.correctValue = newValue;
-          thisWidget.announce();
-        }
-        thisWidget.rendervalue(); 
-      }
-      setValue (value){
-        const thisWidget = this;
-        thisWidget.value = value;
-      }
+  isValid(value) {
+    return !isNaN(value);
+  }
 
-      parseValue(value){
-        return parseInt(value);
-      }
-  
-      isValid(value){
-        return !isNaN(value)
-        //  && value >= settings.amountWidget.defaultMin
-        //  && value <= settings.amountWidget.defaultMax
-      }
+  renderValue() {
+    const thisWidget = this;
+    thisWidget.dom.wrapper.innerHTML = thisWidget.value;
+  }
 
-      rendervalue(){
-        const thisWidget = this;
-        thisWidget.dom.wrapper.inputHTML = thisWidget.value; 
-      }
-
-      announce() {
-        const thisWidget = this;
-        const event = new CustomEvent('updated', {
-          bubbles: true,
-        });
-        thisWidget.dom.wrapper.dispatchEvent(event);
-      }
-
+  announce() {
+    const thisWidget = this;
+    const event = new CustomEvent('updated', { bubbles: true });
+    thisWidget.dom.wrapper.dispatchEvent(event);
+  }
 }
- export default BaseWidget;
-
-
+export default BaseWidget;
 
 
 
