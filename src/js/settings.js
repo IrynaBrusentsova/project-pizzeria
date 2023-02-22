@@ -1,17 +1,17 @@
 
-// ======
-
 export const select = {
   templateOf: {
     menuProduct: '#template-menu-product',
     cartProduct: '#template-cart-product',
     bookingWidget: '#template-booking-widget',
+    
   },
   containerOf: {
     menu: '#product-list',
     cart: '#cart',
     pages: '#pages',
     booking: '.booking-wrapper',
+    
   },
   all: {
     menuProducts: '#product-list > .product',
@@ -66,7 +66,13 @@ export const select = {
   booking: {
     peopleAmount: '.people-amount',
     hoursAmount: '.hours-amount',
+    phoneInput: '.order-confirmation [name="phone"]',
+    addressInput: '.order-confirmation [name="address"]',
+    startersCheck: '.booking-options [name="starter"]',
     tables: '.floor-plan .table',
+    floor: '.floor-plan',
+    orderConfirmation:'.order-confirmation input',
+    sendResBtn: '#booking .order-confirmation .btn-secondary',
   },
   nav: {
     links: '.main-nav a',
@@ -85,6 +91,7 @@ export const classNames = {
   booking: {
     loading: 'loading',
     tableBooked: 'booked',
+    tableClicked: 'selected',
   },
   nav: {
     active: 'active',
@@ -92,6 +99,7 @@ export const classNames = {
   pages: {
     active: 'active',
   },
+  
 };
 
 export const settings = {
@@ -142,4 +150,5 @@ export const templates = {
   bookingWidget: Handlebars.compile(
     document.querySelector(select.templateOf.bookingWidget).innerHTML
   ),
+
 };
