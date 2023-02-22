@@ -173,8 +173,14 @@
         }
   
       }
+      &.selected{
+        background-color: green;
+      }
     }
-  
+  // .table:hover {
+  //   background: green;
+  // }
+
     [data-table="1"] {
       left: 40px;
       top: 40px;
@@ -198,3 +204,7 @@
     @include flex(row, flex-start, space-between);
     margin: ($base-size * 4) auto;
   }
+
+
+
+
