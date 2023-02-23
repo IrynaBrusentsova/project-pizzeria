@@ -56,7 +56,12 @@ class Booking {
       thisBooking.dom.floor.addEventListener('click', function(event){
       thisBooking.initTables(event);
       });
+      
     });
+    thisBooking.dom.sendResBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        thisBooking.sendBooking();
+      });
   }
 
   getData() {
@@ -238,37 +243,30 @@ class Booking {
     }
   }
 
+ 
 
   sendBooking() {
     const thisBooking = this;
     const url = settings.db.url + '/' + settings.db.bookings;
-    //let isChecked = false;
-
-    const phoneInput = thisBooking.dom.phone;
-
-    phoneInput.addEventListener('keypress', function(event) {
-      if (event.which < 48 || event.which > 57) {
-        event.preventDefault(); 
-      }
-    });
-
+       
     const payload = {
-      date: thisBooking.date,
-      hour: utils.numberToHour(thisBooking.hour),
-      table: thisBooking.tableUnbooked,
-      duration:  parseInt(thisBooking.dom.duration.value),
-      people:  parseInt(thisBooking.dom.people.value),
-      phone: phoneInput.value,
-      mail: thisBooking.dom.address.value,
+      date: thisBooking.datePicker.value,
+      hour: thisBooking.hourPicker.value,
+      table: parseInt( thisBooking.selectedTable),
+      duration: thisBooking.hoursAmount.value,
+      ppl: thisBooking.peopleAmount.value,
       starters: [],
+      phone: thisBooking.dom.phone.value,
+      address: thisBooking.dom.address.value,
     };
 
-    for (let domStarter of thisBooking.dom.starters) {
-      if (domStarter.checked == true) {
-        payload.starters.push(domStarter.value);
+  
+    for (let starter of thisBooking.dom.starters) {
+      if (starter.checked == true) {
+        payload.starters.push(starter.value);
       }
     }
-    console.log('payload.starters', domStarter.value);
+   
 
     const options = {
       method: 'POST',
@@ -283,12 +281,14 @@ class Booking {
         return response.json();
       }).then(function (parsedResponse) {
         console.log('parsedResponse booking', parsedResponse);
-        thisBooking.makeBooked(payload.date, payload.hour, payload.duration, payload.table);
-  
-        //window.location.reload();
+        thisBooking.getData();
+   
       });
-      thisBooking.updateDOM();
+      
+  
   }
+
+
 
 }
 

@@ -61,27 +61,28 @@ const app = {
     /*add class Active to matching links, remove class Active from non-matching links */
 
     const orderLink = document.getElementById('orderLink');/* отримала посилання */
-    console.log(orderLink);
-
     const bookingLink = document.getElementById('bookingLink');/* отримала посилання */
-    console.log(bookingLink);
+    const buttonOrder = document.getElementById('buttonOrder');
+    const buttonBooking = document.getElementById('buttonBooking');
+    const buttonHome = document.getElementById('buttonHome');
 
-    //    document.getElementById('orderLink').onclick = function() {  /* чому не працює?*/
-    //     document.location.id ='order';
-    // };
-
+   
     if (orderLink) {
       orderLink.addEventListener('click', function () {
-        // order.classList.toggle('active');
-        home.classList.remove('active');
+        buttonOrder.classList.add('active');
         order.classList.add('active');
+
+        home.classList.remove('active');
+        buttonHome.classList.remove('active');
       });
     }
     if (bookingLink) {
       bookingLink.addEventListener('click', function () {
-        // bookingLink.classList.toggle('active');
-        home.classList.remove('active');
+        buttonBooking.classList.add('active');
         booking.classList.add('active');
+
+        home.classList.remove('active');
+        buttonHome.classList.remove('active'); 
       });
     }
   },
