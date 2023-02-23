@@ -243,8 +243,6 @@ class Booking {
     }
   }
 
- 
-
   sendBooking() {
     const thisBooking = this;
     const url = settings.db.url + '/' + settings.db.bookings;
@@ -282,13 +280,9 @@ class Booking {
       }).then(function (parsedResponse) {
         console.log('parsedResponse booking', parsedResponse);
         thisBooking.getData();
-   
-      });
-      
+      });  
   
   }
-
-
 
 }
 
