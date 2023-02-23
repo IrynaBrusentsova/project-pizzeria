@@ -59,7 +59,36 @@ const app = {
       );
     }
     /*add class Active to matching links, remove class Active from non-matching links */
+
+    const orderLink = document.getElementById('orderLink');
+    console.log(orderLink);
+
+    const bookingLink = document.getElementById('bookingLink');
+    console.log(bookingLink);
+
+    //    document.getElementById('orderLink').onclick = function() {
+    //     document.location.id ='order';
+    // };
+
+    if (orderLink) {
+      orderLink.addEventListener('click', function () {
+        order.classList.toggle('active');
+        home.classList.remove('active');
+        order.classList.toggle('active');
+      });
+    }
+    if (bookingLink) {
+      bookingLink.addEventListener('click', function () {
+        bookingLink.classList.toggle('active');
+        home.classList.remove('active');
+        bookingLink.classList.toggle('active');
+      });
+    }
+
+
   },
+
+
 
   initData: function () {
     const thisApp = this;
@@ -96,7 +125,7 @@ const app = {
     thisApp.initCart();
     thisApp.initPages();
     thisApp.initBooking();
-    
+
   },
   initCart: function () {
     const thisApp = this;
@@ -112,7 +141,9 @@ const app = {
     const bookingWidget = document.querySelector(select.containerOf.booking); //контейнер віджета резервування сторінки
     thisApp.booking = new Booking(bookingWidget);
   },
- 
+
 };
 
 app.init();
+
+

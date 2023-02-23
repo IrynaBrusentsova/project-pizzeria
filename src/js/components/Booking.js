@@ -54,7 +54,7 @@ class Booking {
       thisBooking.updateDOM();
 
       thisBooking.dom.floor.addEventListener('click', function(event){
-        thisBooking.initTables(event);
+      thisBooking.initTables(event);
       });
     });
   }

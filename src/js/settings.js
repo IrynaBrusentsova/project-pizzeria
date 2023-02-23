@@ -99,7 +99,7 @@ export const classNames = {
   pages: {
     active: 'active',
   },
-  
+   
 };
 
 export const settings = {
