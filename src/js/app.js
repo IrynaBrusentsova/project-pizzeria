@@ -18,10 +18,11 @@ const app = {
 
     const idFromHash = window.location.hash.replace('#/', '');
 
-    let pageMatchingHash = thisApp.pages[0];
+     let pageMatchingHash = thisApp.pages[0]; //обираємо по дефолту сторінку home
+    const homePageId = 'home';
 
     for (let page of thisApp.pages) {
-      if (page.id == idFromHash) {
+      if (page.id == idFromHash || page.id == homePageId) {
         pageMatchingHash = page.id;
         break;
       }
@@ -59,14 +60,12 @@ const app = {
       );
     }
     /*add class Active to matching links, remove class Active from non-matching links */
-
-    const orderLink = document.getElementById('orderLink');/* отримала посилання */
+    const orderLink = document.getElementById('orderLink');/* отримала посилання на сторінки*/
     const bookingLink = document.getElementById('bookingLink');/* отримала посилання */
-    const buttonOrder = document.getElementById('buttonOrder');
+    const buttonOrder = document.getElementById('buttonOrder');/* отримала посилання на кнопки в навігації */
     const buttonBooking = document.getElementById('buttonBooking');
     const buttonHome = document.getElementById('buttonHome');
 
-   
     if (orderLink) {
       orderLink.addEventListener('click', function () {
         buttonOrder.classList.add('active');
