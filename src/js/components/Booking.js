@@ -259,11 +259,14 @@ class Booking {
     };
 
   
-    for (let starter of thisBooking.dom.starters) {
-      if (starter.checked == true) {
-        payload.starters.push(starter.value);
+   
+
+    for( let input of thisBooking.dom.startersCheck){
+      if( input.checked ){
+        payload.starters.push(input.value);
       }
     }
+    console.log('payload: ',payload);
    
 
     const options = {
@@ -281,8 +284,12 @@ class Booking {
         console.log('parsedResponse booking', parsedResponse);
         thisBooking.getData();
       });  
+
+      
   
   }
+
+  
 
 }
 
