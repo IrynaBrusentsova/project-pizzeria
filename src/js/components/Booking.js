@@ -258,9 +258,6 @@ class Booking {
       address: thisBooking.dom.address.value,
     };
 
-  
-   
-
     for( let input of thisBooking.dom.startersCheck){
       if( input.checked ){
         payload.starters.push(input.value);
@@ -268,7 +265,6 @@ class Booking {
     }
     console.log('payload: ',payload);
    
-
     const options = {
       method: 'POST',
       headers: {
@@ -277,21 +273,28 @@ class Booking {
       body: JSON.stringify(payload),
     };
 
+  
     fetch(url, options)
       .then(function (response) {
         return response.json();
       }).then(function (parsedResponse) {
         console.log('parsedResponse booking', parsedResponse);
         thisBooking.getData();
+        thisBooking.dom.phone.value = '';
+        thisBooking.dom.address.value = '';
+        thisBooking.dom.hoursAmount.value = '';
+        thisBooking.dom.peopleAmount.value = '';
+        for (let starter of thisBooking.dom.starters){
+          starter.checked =true;
+        }
       });  
-
-      
-  
+ 
   }
-
-  
 
 }
 
-
 export default Booking;
+
+
+
+
