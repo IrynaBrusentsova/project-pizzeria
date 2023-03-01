@@ -279,6 +279,7 @@ class Booking {
         return response.json();
       }).then(function (parsedResponse) {
         console.log('parsedResponse booking', parsedResponse);
+        alert('Order successful')
         thisBooking.getData();
         thisBooking.dom.phone.value = '';
         thisBooking.dom.address.value = '';
